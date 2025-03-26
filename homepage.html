@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ganita Gyan</title>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        a {
+            text-decoration: none;
+            color: #bb86fc;
+            transition: color 0.3s ease;
+        }
+        
+        a:hover {
+            color: #3700b3;
+        }
+        
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, #121212 0%, #2d2d2d 100%);
+            padding: 1.5rem;
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #bb86fc;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 2rem;
+        }
+        
+        .nav-links a {
+            font-weight: 500;
+            position: relative;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: #bb86fc;
+            left: 0;
+            bottom: -4px;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .auth-links {
+            display: flex;
+            align-items: center;
+        }
+        
+        .auth-links a {
+            margin-left: 1.5rem;
+            font-weight: 500;
+        }
+        
+        .login-btn {
+            padding: 0.4rem 1rem;
+            border: 1px solid #bb86fc;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        
+        .login-btn:hover {
+            background: #bb86fc;
+            color: #121212;
+        }
+        
+        .register-btn {
+            padding: 0.4rem 1rem;
+            background: #bb86fc;
+            color: #121212;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        
+        .register-btn:hover {
+            background: #3700b3;
+            color: #ffffff;
+        }
+        
+        .menu-toggle {
+            display: flex;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #bb86fc;
+        }
+    
+        
+         /* Updated Sidebar Styles */
+         .sidebar {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1001;
+            top: 0;
+            left: 0;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 80px;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+        }
+
+        .sidebar a {
+            padding: 15px 25px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            color: #e0e0e0;
+            display: block;
+            transition: 0.3s;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .sidebar a:hover {
+            color: #bb86fc;
+            background: rgba(187, 134, 252, 0.1);
+        }
+
+        .sidebar .closebtn {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            font-size: 25px;
+            margin-left: 50px;
+            color: #bb86fc;
+        }
+
+        /* Updated Overlay Styles */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Updated Menu Button Styles */
+        .openbtn {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 1002;
+            font-size: 20px;
+            cursor: pointer;
+            background-color: transparent;
+            color: #bb86fc;
+            padding: 10px 15px;
+            border: 1px solid #bb86fc;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .openbtn:hover {
+            background-color: rgba(187, 134, 252, 0.1);
+        }
+
+        #main {
+            transition: margin-left .5s;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                padding-top: 60px;
+            }
+            .sidebar a {
+                font-size: 1rem;
+            }
+        }
+        /* Hero Section */
+        .hero {
+            background: url('/api/placeholder/1200/800') center/cover no-repeat;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+        }
+        
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s ease forwards 0.3s;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s ease forwards 0.5s;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: #bb86fc;
+            color: #121212;
+            padding: 0.8rem 2rem;
+            border-radius: 4px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s ease forwards 0.7s;
+        }
+        
+        .cta-button:hover {
+            background: #3700b3;
+            color: #ffffff;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        /* Timeline Section */
+        .timeline-section {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #bb86fc;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 3px;
+            background: #bb86fc;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .timeline {
+            position: relative;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            width: 2px;
+            background: #bb86fc;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .timeline-item {
+            padding: 2rem 0;
+            position: relative;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .timeline-item:nth-child(odd) .timeline-content {
+            margin-right: 60px;
+            text-align: right;
+        }
+        
+        .timeline-item:nth-child(even) .timeline-content {
+            margin-left: 60px;
+            text-align: left;
+        }
+        
+        .timeline-content {
+            width: calc(50% - 40px);
+            background: #1e1e1e;
+            padding: 2rem;
+            border-radius: 4px;
+            position: relative;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: all 0.5s ease;
+        }
+        
+        .timeline-item:nth-child(even) .timeline-content {
+            transform: translateX(50px);
+        }
+        
+        .timeline-content.animated {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .timeline-date {
+            color: #bb86fc;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .timeline-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .timeline-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+        
+        .timeline-dot {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #bb86fc;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+        }
+        
+        /* Featured Mathematicians Section */
+        .featured-section {
+            background: #1a1a1a;
+            padding: 6rem 2rem;
+        }
+        
+        .featured-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .mathematician-card {
+            background: #2d2d2d;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .mathematician-card.animated {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .mathematician-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        .card-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+        
+        .card-content {
+            padding: 1.5rem;
+        }
+        
+        .card-content h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: #bb86fc;
+        }
+        
+        .card-content .era {
+            color: #03dac6;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
+        .card-content p {
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+        
+        .read-more {
+            font-weight: 500;
+            position: relative;
+        }
+        
+        .read-more::after {
+            content: '→';
+            margin-left: 0.3rem;
+            transition: margin-left 0.3s ease;
+        }
+        
+        .read-more:hover::after {
+            margin-left: 0.6rem;
+        }
+        
+        /* Quotes Section */
+        .quotes-section {
+            padding: 6rem 2rem;
+            background: linear-gradient(135deg, #121212 0%, #2d2d2d 100%);
+            text-align: center;
+        }
+        
+        .quote-slider {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .quote {
+            padding: 2rem;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        .quote.active {
+            display: block;
+            opacity: 1;
+        }
+        
+        .quote p {
+            font-size: 1.5rem;
+            line-height: 1.8;
+            font-style: italic;
+            margin-bottom: 1.5rem;
+        }
+        
+        .quote .author {
+            color: #bb86fc;
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+        
+        .slider-nav {
+            margin-top: 2rem;
+        }
+        
+        .slider-nav button {
+            background: transparent;
+            border: none;
+            color: #bb86fc;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            transition: color 0.3s ease;
+        }
+        
+        .slider-nav button:hover {
+            color: #3700b3;
+        }
+        
+        /* Contact Section */
+        .contact-section {
+            padding: 6rem 2rem;
+            background: #1a1a1a;
+        }
+        
+        .contact-container {
+            max-width: 900px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+        
+        .contact-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: #bb86fc;
+        }
+        
+        .contact-info p {
+            margin-bottom: 1.5rem;
+        }
+        
+        .contact-form .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .contact-form label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #bb86fc;
+        }
+        
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #333;
+            background: #2d2d2d;
+            border-radius: 4px;
+            color: #e0e0e0;
+        }
+        
+        .contact-form textarea {
+            height: 150px;
+            resize: vertical;
+        }
+        
+        .contact-form button {
+            background: #bb86fc;
+            color: #121212;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .contact-form button:hover {
+            background: #3700b3;
+            color: #ffffff;
+        }
+        
+        /* Footer */
+        footer {
+            background: #121212;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-links li {
+            margin: 0 1rem;
+        }
+        
+        .social-icons {
+            margin-bottom: 2rem;
+        }
+        
+        .social-icons a {
+            display: inline-block;
+            margin: 0 0.8rem;
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .social-icons a:hover {
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            font-size: 0.9rem;
+            color: #777;
+        }
+        
+        /* Overlay */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .menu-toggle {
+                display: block;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .timeline::before {
+                left: 20px;
+            }
+            
+            .timeline-item {
+                flex-direction: column;
+            }
+            
+            .timeline-item:nth-child(odd) .timeline-content,
+            .timeline-item:nth-child(even) .timeline-content {
+                width: 100%;
+                margin: 0 0 0 60px;
+                text-align: left;
+            }
+            
+            .timeline-dot {
+                left: 20px;
+            }
+            
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .auth-links {
+                display: none;
+            }
+        }
+    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+   
+    <!-- Sidebar -->
+    <div id="mySidebar" class="sidebar">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="resource-library"><i class="fas fa-book-open"></i> Resource Library</a>
+        <a href="quiz-game"><i class="fas fa-gamepad"></i> Quiz Game</a>
+        <a href="virtual-museum"><i class="fas fa-museum"></i> Virtual Museum</a>
+        <a href="vedic-galaxy"><i class="fas fa-star"></i> Vedic Galaxy</a>
+    </div>
+
+    <!-- Menu Button -->
+    <button class="openbtn" onclick="openNav()">☰</button>
+
+<!-- Update the JavaScript for the sidebar -->
+    <script>
+        function openNav() {
+            document.getElementById("mySidebar").style.width = "250px";
+            document.getElementById("main").style.marginLeft = "250px";
+            document.querySelector(".openbtn").style.opacity = "0";
+        }
+
+        function closeNav() {
+            document.getElementById("mySidebar").style.width = "0";
+            document.getElementById("main").style.marginLeft = "0";
+            document.querySelector(".openbtn").style.opacity = "1";
+        }
+    </script>
+    
+       <!-- Overlay -->
+       <div class="overlay"></div>
+    
+ 
+    
+    <!-- Header -->
+    <header>
+        <nav>
+            
+            <div class="logo">Ganita Gyan</div>
+            <ul class="nav-links">
+                <li><a href="#timeline">Timeline</a></li>
+                <li><a href="#featured">Mathematicians</a></li>
+                <li><a href="#quotes">Quotes</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="auth-links">
+                <a href="login.html" class="login-btn" target="_blank">Login</a>
+                <a href="signup.html" class="register-btn" target="_blank">Sign Up</a>
+            </div>
+        </nav>
+    </header>
+    
+    <!-- Hero Section -->
+    
+    <section class="hero">
+    <div class="hero-background">
+        <img src="bg.jpeg" alt="Hero Background" class="hero-img" width="700" height="400">
+    </div>
+        <div class="hero-content">
+            <h1>GANITA GYAN</h1>
+            <p>Discover the brilliant minds who shaped Indian mathematical history from ancient Vedic period to modern India</p>
+            <a href="#timeline" class="cta-button">Explore Timeline</a>
+        </div>
+    </section>
+    
+    <!-- Timeline Section -->
+    <section id="timeline" class="timeline-section">
+        <div class="section-title">
+            <h2>Historical Timeline</h2>
+            <p>The evolution of mathematical thinking across different eras</p>
+        </div>
+        
+        <div class="timeline">
+            <!-- Vedic Period -->
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <span class="timeline-date">1500 BCE - 500 BCE</span>
+                    <h3 class="timeline-title">Vedic Period</h3>
+                    <img src="vedic.jpeg" width="50px" height="30px" alt="Vedic Mathematics" class="timeline-img">
+                    <p>The origins of Indian mathematics can be traced to the Vedic period, where mathematical concepts were developed for constructing fire altars and performing rituals. The Sulba Sutras contained early geometric principles and approximations of irrational numbers.</p>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+            
+            <!-- Classical Period -->
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <span class="timeline-date">500 BCE - 500 CE</span>
+                    <h3 class="timeline-title">Classical Period</h3>
+                    <img src="classic.png" alt="Classical Indian Mathematics" class="timeline-img">
+                    <p>This era saw significant advancements with works like the Bakshali Manuscript. Mathematicians began developing sophisticated number systems, algebra, and trigonometry. The concept of zero as a number and place value system emerged during this time.</p>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+            
+            <!-- Golden Age -->
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <span class="timeline-date">500 CE - 1200 CE</span>
+                    <h3 class="timeline-title">Golden Age of Indian Mathematics</h3>
+                    <img src="golden.jpeg" alt="Golden Age Mathematics" class="timeline-img">
+                    <p>The most prolific period for Indian mathematics, featuring luminaries like Aryabhata, Brahmagupta, and Bhaskara II. Concepts of calculus, advanced algebra, and astronomical mathematics were developed. The decimal system was fully established and spread to the Arab world and Europe.</p>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+            
+            <!-- Medieval Period -->
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <span class="timeline-date">1200 CE - 1800 CE</span>
+                    <h3 class="timeline-title">Medieval Period</h3>
+                    <img src="/medival.jpg" alt="Medieval Indian Mathematics" class="timeline-img">
+                    <p>The Kerala School of Astronomy and Mathematics flourished during this time, making groundbreaking contributions to infinite series, calculus, and trigonometry. Mathematicians like Madhava of Sangamagrama developed series expansions for trigonometric functions centuries before European mathematicians.</p>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+            
+            <!-- Modern Era -->
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <span class="timeline-date">1800 CE - Present</span>
+                    <h3 class="timeline-title">Modern Era</h3>
+                    <img src="modern.jpg" alt="Modern Indian Mathematics" class="timeline-img">
+                    <p>In the modern era, Indian mathematicians have made significant contributions to global mathematics. Figures like Srinivasa Ramanujan revolutionized number theory, while others have excelled in fields ranging from algebraic geometry to computational mathematics.</p>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Featured Mathematicians Section -->
+    <section id="featured" class="featured-section">
+        <div class="section-title">
+            <h2>Notable Mathematicians</h2>
+            <p>Brilliant minds who changed the course of  Indian mathematical history</p>
+        </div>
+        
+        <div class="featured-grid">
+            <!-- Aryabhata -->
+            <div class="mathematician-card">
+                <img src="aryabhatta.jpeg" alt="Aryabhata" class="card-img">
+                <div class="card-content">
+                    <h3>Aryabhata</h3>
+                    <span class="era">476-550 CE</span>
+                    <p>First major mathematician-astronomer from the classical age of Indian mathematics. He wrote the Aryabhatiya, which covers arithmetic, algebra, and trigonometry. He calculated π to four decimal places and developed a place value system.</p>
+                    <a href="#" class="read-more">Learn more</a>
+                </div>
+            </div>
+            
+            <!-- Brahmagupta -->
+            <div class="mathematician-card">
+                <img src="brahmagupta.jpeg" alt="Brahmagupta" class="card-img">
+                <div class="card-content">
+                    <h3>Brahmagupta</h3>
+                    <span class="era">598-668 CE</span>
+                    <p>Pioneered the use of zero as a number, gave rules for computing with zero, and wrote rules for computing with negative numbers. His work Brahmasphutasiddhanta contains remarkable contributions to mathematics.</p>
+                    <a href="#" class="read-more">Learn more</a>
+                </div>
+            </div>
+            
+            <!-- Bhaskara II -->
+            <div class="mathematician-card">
+                <img src="bhaskara.jpeg" alt="Bhaskara II" class="card-img">
+                <div class="card-content">
+                    <h3>Bhaskara II</h3>
+                    <span class="era">1114-1185 CE</span>
+                    <p>Known for his work in calculus, he was the first to conceptualize the derivative representing instantaneous change. His book Lilavati contains numerous problems on arithmetic, algebra, and geometry.</p>
+                    <a href="#" class="read-more">Learn more</a>
+                </div>
+            </div>
+            
+            <!-- Madhava of Sangamagrama -->
+            <div class="mathematician-card">
+                <img src="madhava.jpeg" alt="Madhava of Sangamagrama" class="card-img">
+                <div class="card-content">
+                    <h3>Madhava of Sangamagrama</h3>
+                    <span class="era">c. 1350-1425 CE</span>
+                    <p>Founder of the Kerala School, he discovered infinite series expansions for trigonometric functions 300 years before Newton and Leibniz. He calculated π to 11 decimal places.</p>
+                    <a href="#" class="read-more">Learn more</a>
+                </div>
+            </div>
+            
+            <!-- Srinivasa Ramanujan -->
+            <div class="mathematician-card">
+                <img src="ramanujan.jpeg" alt="Srinivasa Ramanujan" class="card-img">
+                <div class="card-content">
+                    <h3>Srinivasa Ramanujan</h3>
+                    <span class="era">1887-1920</span>
+                    <p>Self-taught mathematical genius who made extraordinary contributions to mathematical analysis, number theory, infinite series, and continued fractions. He independently compiled nearly 3,900 results during his short lifetime.</p>
+                    <a href="#" class="read-more">Learn more</a>
+                </div>
+            </div>
+            
+            <!-- C.R. Rao -->
+            <div class="mathematician-card">
+                <img src="rao.jpeg" alt="C.R. Rao" class="card-img">
+                <div class="card-content">
+                    <h3>C.R. Rao</h3>
+                    <span class="era">1920-Present</span>
+                    <p>Pioneering figure in statistics, known for theory of estimation, Cramer-Rao inequality, and contributions to statistical genetics and biometry. His work has influenced fields from economics to medical research.</p>
+                    <a href="#" class="read-more">Learn more</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Quotes Section -->
+    <section id="quotes" class="quotes-section">
+        <div class="section-title">
+            <h2>Wisdom & Insights</h2>
+            <p>Timeless thoughts from India's mathematical geniuses</p>
+        </div>
+        
+        <div class="quote-slider">
+            <div class="quote active">
+                <p>"An equation means nothing to me unless it expresses a thought of God."</p>
+                <span class="author">— Srinivasa Ramanujan</span>
+            </div>
+            
+            <div class="quote">
+                <p>"Mathematics is the science of quantity and space—the abstract science of which arithmetic, algebra, geometry, and analysis are the various branches."</p>
+                <span class="author">— Bhaskara II</span>
+            </div>
+            
+            <div class="quote">
+                <p>"Just as the sun eclipses the stars by its brilliance, so the man of knowledge will eclipse the fame of others in assemblies of the people if he proposes algebraic problems, and still more if he solves them."</p>
+                <span class="author">— Brahmagupta</span>
+            </div>
+            
+            <div class="slider-nav">
+                <button id="prev-quote"><i class="fas fa-chevron-left"></i></button>
+                <button id="next-quote"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </section>
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <div class="section-title">
+            <h2>Get In Touch</h2>
+            <p>Have questions or suggestions? Reach out to us!</p>
+        </div>
+        
+        <div class="contact-container">
+            <div class="contact-info">
+                <h3>Contact Information</h3>
+                <p>We're dedicated to preserving and promoting the rich heritage of Indian mathematics. If you're a researcher, student, or enthusiast, we'd love to hear from you.</p>
+                <p><strong>Email:</strong> info@indianmathematics.org</p>
+                <p><strong>Address:</strong> Department of Mathematical History, University of Delhi, New Delhi, India</p>
+            </div>
+            
+            <div class="contact-form">
+                <form>
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" required></textarea>
+                    </div>
+                    <button type="submit">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <ul class="footer-links">
+                <li><a href="#timeline">Timeline</a></li>
+                <li><a href="#featured">Mathematicians</a></li>
+                <li><a href="#quotes">Quotes</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+            
+            <p class="copyright">© 2025 Ganita Gyan. All Rights Reserved @ Ganita Gyan.</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Timeline Animation
+        function animateOnScroll() {
+            const timelineContents = document.querySelectorAll('.timeline-content');
+            const mathematicianCards = document.querySelectorAll('.mathematician-card');
+            
+            timelineContents.forEach(content => {
+                const contentPosition = content.getBoundingClientRect().top;
+                const screenPosition = window.innerHeight / 1.2;
+                
+                if (contentPosition < screenPosition) {
+                    content.classList.add('animated');
+                }
+            });
+            
+            mathematicianCards.forEach((card, index) => {
+                const cardPosition = card.getBoundingClientRect().top;
+                const screenPosition = window.innerHeight / 1.1;
+                
+                if (cardPosition < screenPosition) {
+                    setTimeout(() => {
+                        card.classList.add('animated');
+                    }, index * 100);
+                }
+            });
+        }
+        
+        window.addEventListener('scroll', animateOnScroll);
+        window.addEventListener('load', animateOnScroll);
+        
+        // Quote Slider
+        const quotes = document.querySelectorAll('.quote');
+        const prevBtn = document.getElementById('prev-quote');
+        const nextBtn = document.getElementById('next-quote');
+        let currentQuote = 0;
+        
+        function showQuote(index) {
+            quotes.forEach(quote => quote.classList.remove('active'));
+            quotes[index].classList.add('active');
+        }
+        
+        prevBtn.addEventListener('click', () => {
+            currentQuote--;
+            if (currentQuote < 0) {
+                currentQuote = quotes.length - 1;
+            }
+            showQuote(currentQuote);
+        });
+        
+        nextBtn.addEventListener('click', () => {
+            currentQuote++;
+            if (currentQuote >= quotes.length) {
+                currentQuote = 0;
+            }
+            showQuote(currentQuote);
+        });
+        
+        // Auto change quotes every 5 seconds
+        setInterval(() => {
+            currentQuote++;
+            if (currentQuote >= quotes.length) {
+                currentQuote = 0;
+            }
+            showQuote(currentQuote);
+        }, 8000);
+    </script>
+</body>
+</html>

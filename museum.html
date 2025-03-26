@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Museum </title>
+    <!-- Pannellum CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pannellum/2.5.6/pannellum.css" />
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            background-image:url("museum_bg.jpg");
+            color: #333;
+        }
+        header {
+            background-color: #1c2331;
+            color: #fff;
+            text-align: center;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            margin-bottom: 100px; /* Space for footer */
+        }
+        footer {
+            background-color: #1c2331;
+            color: #fff;
+            text-align: center;
+            padding: 1rem;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
+        }
+        #panorama {
+            width: 100%;
+            height: 500px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+        .room-selector {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .room-button {
+            padding: 10px 20px;
+            background-color: #3a506b;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .room-button:hover {
+            background-color: #4d5f80;
+            transform: translateY(-2px);
+        }
+        .room-button.active {
+            background-color: #6a8caf;
+            box-shadow: 0 0 8px rgba(106, 140, 175, 0.5);
+        }
+        .room-info {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Virtual Museum - Into the World Of Indian Mathematics</h1>
+    </header>
+    
+    <main>
+        <h2 style="color: #fff">Welcome to Ganita Gyan Virtual Museum</h2>
+        <p style="color: #fff">Discover the lost heritage about the Great Indian Mathematicians and Scholars. Explore their contribution 
+            through our Virtual Museum </p>
+        
+        <div class="room-selector">
+            <button id="ancient-era-btn" class="room-button active">Ancient Era</button>
+            <button id="classical-era-btn" class="room-button">Classical Era</button>
+            <button id="modern-era-btn" class="room-button">Modern Era</button>
+            <button id="famous-works-btn" class="room-button">Famous Works</button>
+            <button id="art-gallery-btn" class="room-button">Art Gallery</button>
+        </div>
+        
+        <div id="panorama"></div>
+        
+        <div id="room-description" class="room-info">
+            <h3>Ancient Era</h3>
+            <p>(2500 BCE - 400 CE): From the mathematical innovations in the Indus Valley Civilization to the
+                 development of the decimal system, zero, and early algebra in texts like the Sulba Sutras and Vedas.</div>
+    </main>
+    
+    <footer>
+        <p>&copy; 2025 Virtual Museum Experience. All rights reserved @ Ganita Gyan.</p>
+    </footer>
+
+    <!-- Pannellum JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pannellum/2.5.6/pannellum.js"></script>
+    <script>
+        // Room data
+        const rooms = {
+            'ancient-era': {
+                title: 'Ancient Era',
+                panoramaUrl: 'ancient.jpg',
+                description: '(2500 BCE - 400 CE): From the mathematical innovations in the Indus Valley Civilization to the development of the decimal system, zero, and early algebra in texts like the Sulba Sutras and Vedas.ack in time to explore artifacts from the earliest human civilizations. This hall features items from Mesopotamia, Ancient Egypt, and early Asian dynasties.'
+            },
+            'classical-era': {
+                title: 'Classical Era',
+                panoramaUrl: 'classical.jpeg',
+                description: '(400 - 1200 CE): The golden age of Indian mathematics led by scholars like Aryabhata, Brahmagupta, and Bhaskara II, who advanced trigonometry, algebra, and calculus concepts while making breakthroughs in astronomy.'
+            },
+            'modern-era': {
+                title: 'Modern Era',
+                panoramaUrl: 'modern.jpg',
+                description: "(1200 CE - Present): From the Kerala School of Mathematics with Madhava's series to contemporary figures like Ramanujan, C.R. Rao, and Manjul Bhargava, who've contributed significantly to number theory, statistics, and modern mathematical research. "            },
+            'famous-works': {
+                title: 'Famous Works',
+                panoramaUrl: 'works.jpeg',
+                description: 'This special exhibition brings together some of the most iconic and influential mathematical work from throughout history, each one having changed the course of the mathematics we know today.'
+            },
+            'art-gallery': {
+                title: 'Art Gallery',
+                panoramaUrl: 'art_gallery.jpg',
+                description: 'Our main gallery showcases a rotating collection of mathematicians and their priceless discoveries, curated to create dialogue between different ideas and periods.'
+            }
+        };
+        
+        // Initialize viewer with the ancient era
+        let viewer = pannellum.viewer('panorama', {
+            "type": "equirectangular",
+            "panorama": rooms['ancient-era'].panoramaUrl,
+            "autoLoad": true,
+            "autoRotate": -1,
+            "title": rooms['ancient-era'].title,
+            "author": "Ganita Gyan",
+            "compass": true,
+            "showFullscreenCtrl": true,
+            "showControls": true
+        });
+
+        // Function to update the viewer and description
+        function updateRoom(roomKey) {
+            const room = rooms[roomKey];
+            
+            // Update panorama
+            viewer.destroy();
+            viewer = pannellum.viewer('panorama', {
+                "type": "equirectangular",
+                "panorama": room.panoramaUrl,
+                "autoLoad": true,
+                "autoRotate": -1,
+                "title": room.title,
+                "author": "Ganita Gyan",
+                "compass": true,
+                "showFullscreenCtrl": true,
+                "showControls": true
+            });
+            
+            // Update description
+            document.querySelector('#room-description h3').textContent = room.title;
+            document.querySelector('#room-description p').textContent = room.description;
+            
+            // Update active button
+            document.querySelectorAll('.room-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(roomKey + '-btn').classList.add('active');
+        }
+        
+        // Set up button event listeners
+        document.getElementById('ancient-era-btn').addEventListener('click', () => {
+            updateRoom('ancient-era');
+        });
+        
+        document.getElementById('classical-era-btn').addEventListener('click', () => {
+            updateRoom('classical-era');
+        });
+        
+        document.getElementById('modern-era-btn').addEventListener('click', () => {
+            updateRoom('modern-era');
+        });
+        
+        document.getElementById('famous-works-btn').addEventListener('click', () => {
+            updateRoom('famous-works');
+        });
+        
+        document.getElementById('art-gallery-btn').addEventListener('click', () => {
+            updateRoom('art-gallery');
+        });
+    </script>
+</body>
+</html>
