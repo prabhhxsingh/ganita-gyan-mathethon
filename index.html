@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Galaxy Planets</title>
+  <style>
+    body { margin: 0; overflow: hidden; background: black; font-family: Arial, sans-serif; }
+    .tooltip {
+      position: absolute;
+      padding: 10px 14px;
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      border-radius: 8px;
+      font-size: 16px;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.3s ease-in-out;
+      opacity: 0;
+      box-shadow: 0 0 12px rgba(255, 165, 0, 0.8);
+    }
+  </style>
+</head>
+<body>
+  <div id="tooltip" class="tooltip"></div>
+
+  <script type="module">
+    import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.module.min.js';
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1500);
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    const textureLoader = new THREE.TextureLoader();
+    textureLoader.load('https://i.imgur.com/NTaMuI0.jpg', texture => scene.background = texture);
+
+    // Lighting
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1.2);
+    directionalLight.position.set(30, 20, 40);
+    const pointLight = new THREE.PointLight(0xffaa00, 1.5, 300);
+    pointLight.position.set(0, 0, 0);
+    scene.add(ambientLight, directionalLight, pointLight);
+
+    function createSphere(size, textureUrl, position, name, url) {
+      const geometry = new THREE.SphereGeometry(size, 64, 64);
+      const material = new THREE.MeshStandardMaterial({
+        map: textureLoader.load(textureUrl),
+        emissive: 0x111111,
+        roughness: 0.9,
+        metalness: 0.2,
+        side: THREE.DoubleSide
+      });
+
+      const sphere = new THREE.Mesh(geometry, material);
+      sphere.position.set(...position);
+      sphere.userData = { url, name, rotating: false };
+      scene.add(sphere);
+      return sphere;
+    }
+
+    const sun = new THREE.Mesh(new THREE.SphereGeometry(20, 64, 64), new THREE.MeshStandardMaterial({
+      emissive: 0xffaa00,
+      emissiveIntensity: 1.2,
+      side: THREE.DoubleSide
+    }));
+    scene.add(sun);
+
+    const planets = [
+      createSphere(9, "https://i.imgur.com/JLqxygO.jpg", [50, 8, -30], "Ramanujan", "ramarjun.html"),
+      createSphere(8, "https://i.imgur.com/8l5ZKwI.jpg", [-50, -6, 25], "Aryabhata", "aryabhata.html"),
+      createSphere(10, "https://i.imgur.com/BEfmIMb.jpg", [60, 12, 15], "Brahmagupta", "brahmagupta.jpej.html"),
+      createSphere(11, "https://i.imgur.com/hOZobxf.jpg", [-65, 5, -35], "Bhaskara II", "bhaskara.html")
+    ];
+
+    const tooltip = document.getElementById("tooltip");
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
+
+    function onMouseMove(event) {
+      mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+      mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+      raycaster.setFromCamera(mouse, camera);
+      const intersects = raycaster.intersectObjects(planets);
+
+      planets.forEach(planet => planet.userData.rotating = false);
+
+      if (intersects.length > 0) {
+        const planet = intersects[0].object;
+        tooltip.innerText = planet.userData.name;
+        tooltip.style.left = `${event.clientX + 10}px`;
+        tooltip.style.top = `${event.clientY - 20}px`;
+        tooltip.style.visibility = "visible";
+        tooltip.style.opacity = "1";
+        planet.userData.rotating = true;
+      } else {
+        tooltip.style.visibility = "hidden";
+        tooltip.style.opacity = "0";
+      }
+    }
+
+    function onMouseClick(event) {
+      raycaster.setFromCamera(mouse, camera);
+      const intersects = raycaster.intersectObjects(planets);
+      if (intersects.length > 0) {
+        const url = intersects[0].object.userData.url;
+        if (url) window.location.href = url;
+      }
+    }
+
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("click", onMouseClick);
+
+    camera.position.set(0, 10, 90);
+
+    function animate() {
+      requestAnimationFrame(animate);
+      planets.forEach(planet => {
+        if (planet.userData.rotating) {
+          planet.rotation.y += 0.02;
+        }
+      });
+
+      sun.rotation.y += 0.005;
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+    });
+
+  </script>
+</body>
+</html>
